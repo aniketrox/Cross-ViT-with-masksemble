@@ -12,3 +12,19 @@ In this work, we investigate a Masksemble-aided Cross ViT model to measure the u
 
 
 ![overview](https://github.com/aniketrox/Cross-ViT-with-masksemble/blob/main/architecture/model.png)
+
+
+## Installation
+
+Tested on Ubuntu only.
+
+**Prerequisite:**
+
+- Python 3.8+
+- PyTorch 1.12+ and corresponding torchvision
+
+**Clone our repository:**
+
+```bash
+git clone https://github.com/aniketrox/Cross-ViT-with-masksemble.git
+```
