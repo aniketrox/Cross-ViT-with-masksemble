@@ -32,3 +32,7 @@ git clone https://github.com/aniketrox/Cross-ViT-with-masksemble.git
 ## ROC Curve Comparison
 
 ![roc](https://github.com/aniketrox/Cross-ViT-with-masksemble/blob/main/roc/roc_auc_multi.png)
+
+## Probability Comparison
+
+![roc](https://github.com/aniketrox/Cross-ViT-with-masksemble/blob/main/comparison/probability_comparison.png)
