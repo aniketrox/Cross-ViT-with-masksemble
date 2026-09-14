@@ -38,7 +38,7 @@
 ## Architecture Overview
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/IBM/CrossViT/main/.github/crossvit_arch.png" alt="Cross-ViT Detailed Mechanism" width="800"/>
+  <img src="https://github.com/aniketrox/Cross-ViT-with-masksemble/blob/main/architecture/model.png" alt="Cross-ViT Detailed Mechanism" width="800"/>
 </div>
 
 ### How Masksembles Work in Cross-ViT
