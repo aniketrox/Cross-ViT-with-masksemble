@@ -1,27 +1,47 @@
+<div align="center">
+
 # Cross-ViT with Masksembles
 ### Multi-Scale Vision Transformers with Fast Uncertainty Quantification
 
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org/)
-[![Python](https://img.shields.io/badge/Python-3.8%20%7C%203.9%20%7C%203.10-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
-[![Stars](https://img.shields.io/github/stars/aniketrox/Cross-ViT-with-masksemble?style=for-the-badge&color=gold)](https://github.com/aniketrox/Cross-ViT-with-masksemble/stargazers)
-[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen?style=for-the-badge)](https://github.com/aniketrox/Cross-ViT-with-masksemble/pulls)
+<p align="center">
+  <a href="https://pytorch.org/"><img src="https://img.shields.io/badge/PyTorch-2.0+-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white" alt="PyTorch"></a>
+  <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.8%20%7C%203.9%20%7C%203.10-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge" alt="License"></a>
+  <a href="https://github.com/aniketrox/Cross-ViT-with-masksemble/stargazers"><img src="https://img.shields.io/github/stars/aniketrox/Cross-ViT-with-masksemble?style=for-the-badge&color=gold" alt="Stars"></a>
+  <a href="https://github.com/aniketrox/Cross-ViT-with-masksemble/pulls"><img src="https://img.shields.io/badge/PRs-Welcome-brightgreen?style=for-the-badge" alt="PRs Welcome"></a>
+</p>
 
-A unified deep learning framework integrating dual-scale Vision Transformers (Cross-ViT) with Masksemble-based ensemble inference for robust classification and calibrated uncertainty estimation.
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/13008461/130323326-80590a98-8926-4d04-a1db-04147781b017.png" alt="Cross-ViT Architecture Banner" width="850"/>
+</p>
+
+<p align="center">
+  <b>A unified deep learning framework integrating dual-scale Vision Transformers (Cross-ViT) with Masksemble-based ensemble inference for robust classification and calibrated uncertainty estimation.</b>
+</p>
+
+[Key Features](#-key-features) â€¢ [Architecture](#-architecture-overview) â€¢ [Getting Started](#-getting-started) â€¢ [Training & Evaluation](#-training--evaluation) â€¢ [Benchmark](#-benchmark-comparison) â€¢ [Contributing](#-contributing)
 
 ---
 
+</div>
+
 ## Key Features
 
-* Dual-Branch Multi-Scale ViT: Jointly extracts fine-grained patch details and broad contextual features simultaneously.
-* Linear-Time Cross-Attention: Fuses representations between different patch resolutions using an efficient token-exchange mechanism.
-* Lightweight Masksembles: Emulates deep ensembles in a single forward/backward pipeline using structured binary masks without the Nx training cost.
-* Uncertainty Quantification (UQ): Computes predictive entropy and variance scores to flag out-of-distribution (OOD) or low-confidence medical/clinical samples.
-* Modular PyTorch Pipeline: Clean training scripts, custom data loaders, and plug-and-play config support.
+* **Dual-Branch Multi-Scale ViT:** Jointly extracts fine-grained patch details (small patches) and broad contextual semantics (large patches) simultaneously.
+* **Linear-Time Cross-Attention:** Efficiently fuses multi-scale representations via class token querying with linear O(N) complexity.
+* **Fast Masksembles:** Emulates deep ensembles in a single forward/backward pass using fixed structured binary masks without the Nx training penalty.
+* **Uncertainty Quantification (UQ):** Computes calibrated predictive entropy and variance scores to detect out-of-distribution (OOD) and ambiguous inputs.
+* **Production-Ready Pipeline:** Fully modular PyTorch scripts, data augmentation, checkpointing, and evaluation metrics.
 
 ---
 
 ## Architecture Overview
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/IBM/CrossViT/main/.github/crossvit_arch.png" alt="Cross-ViT Detailed Mechanism" width="800"/>
+</div>
+
+### How Masksembles Work in Cross-ViT
 
 ```
 Input Image (H x W x 3)
@@ -43,10 +63,9 @@ Input Image (H x W x 3)
                                                                   Ensemble Predictions & Uncertainty
 ```
 
-### How Masksembles Work in Cross-ViT
-1. Multi-Scale Feature Extraction: Small patches (Ps = 8x8 or 12x12) capture localized textures, while large patches (Pl = 16x16 or 24x24) preserve global structure.
-2. Cross-Scale Interaction: The class token of each branch queries the patch tokens of the opposite branch via cross-attention.
-3. Structured Masking: Fixed pseudo-random binary masks {M_1, M_2, ..., M_B} are applied to intermediate feature activations to simulate B distinct subnetworks for robust ensemble predictions.
+1. **Multi-Scale Feature Extraction:** Small patches (8x8 or 12x12) capture localized texture anomalies, while large patches (16x16 or 24x24) preserve global anatomical structure.
+2. **Cross-Scale Interaction:** The class token of each branch queries the patch tokens of the opposite branch via cross-attention.
+3. **Structured Masking:** Fixed pseudo-random binary masks {M_1, M_2, ..., M_B} are applied to intermediate feature activations to simulate B distinct subnetworks.
 
 ---
 
@@ -86,7 +105,7 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 3. Dependencies
+### 3. Requirements
 ```txt
 torch>=2.0.0
 torchvision>=0.15.0
@@ -128,29 +147,33 @@ python evaluate.py \
 
 ## Benchmark Comparison
 
-| Model Variant | Accuracy (%) | Macro F1 | ECE (Down) | Params (M) |
+| Model Architecture | Accuracy (%) | Macro F1 | ECE (Down) | Total Params |
 | :--- | :---: | :---: | :---: | :---: |
-| Standard ViT-B/16 | 84.2 | 0.812 | 0.084 | ~86M |
-| Standard Cross-ViT | 86.8 | 0.845 | 0.062 | ~43M |
-| Cross-ViT + Masksembles (Ours) | 88.9 | 0.873 | 0.028 | ~44M |
+| Standard ViT-B/16 | 84.2% | 0.812 | 0.084 | ~86M |
+| Standard Cross-ViT | 86.8% | 0.845 | 0.062 | ~43M |
+| **Cross-ViT + Masksembles (Ours)** | **88.9%** | **0.873** | **0.028** | **~44M** |
 
 ---
 
 ## Contributing
 
 Contributions, issues, and feature requests are welcome!
-1. Fork the Project
-2. Create your Feature Branch (git checkout -b feature/AmazingFeature)
-3. Commit your Changes (git commit -m 'Add some AmazingFeature')
-4. Push to the Branch (git push origin feature/AmazingFeature)
+Feel free to check the [Issues page](https://github.com/aniketrox/Cross-ViT-with-masksemble/issues).
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/NewFeature`)
+3. Commit your changes (`git commit -m 'Add NewFeature'`)
+4. Push to the branch (`git push origin feature/NewFeature`)
 5. Open a Pull Request
 
 ---
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## References & Acknowledgments
-* CrossViT: Chen et al., "CrossViT: Cross-Attention Multi-Scale Vision Transformer for Image Classification", ICCV 2021.
-* Masksembles: Durasov et al., "Masksembles for Uncertainty Estimation", CVPR 2021.
-* Built upon PyTorch Image Models (timm).
+
+* **CrossViT:** Chen et al., *"CrossViT: Cross-Attention Multi-Scale Vision Transformer for Image Classification"*, ICCV 2021.
+* **Masksembles:** Durasov et al., *"Masksembles for Uncertainty Estimation"*, CVPR 2021.
+* Built upon [PyTorch Image Models (timm)](https://github.com/huggingface/pytorch-image-models).
