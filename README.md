@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/13008461/130323326-80590a98-8926-4d04-a1db-04147781b017.png" alt="Cross-ViT Architecture Banner" width="850"/>
+  <img src="https://github.com/aniketrox/Cross-ViT-with-masksemble/blob/main/architecture/model.png" alt="Cross-ViT Architecture Banner" width="850"/>
 </p>
 
 <p align="center">
