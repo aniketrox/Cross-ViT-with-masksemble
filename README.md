@@ -1,4 +1,4 @@
-# ðŸ”¬ Cross-ViT with Masksembles
+# Cross-ViT with Masksembles
 ### Multi-Scale Vision Transformers with Fast Uncertainty Quantification
 
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org/)
@@ -11,35 +11,35 @@ A unified deep learning framework integrating dual-scale Vision Transformers (Cr
 
 ---
 
-## ðŸŒŸ Key Features
+## Key Features
 
-- ðŸ”€ Dual-Branch Multi-Scale ViT: Jointly extracts fine-grained patch details and broad contextual features simultaneously.
-- âš¡ Linear-Time Cross-Attention: Fuses representations between different patch resolutions using an efficient token-exchange mechanism.
-- ðŸŽ¯ Lightweight Masksembles: Emulates deep ensembles in a single forward/backward pipeline using structured binary masks without the NÃ— training cost.
-- ðŸ©º Uncertainty Quantification (UQ): Computes predictive entropy and variance scores to flag out-of-distribution (OOD) or low-confidence medical/clinical samples.
-- ðŸ“Š Modular PyTorch Pipeline: Clean training scripts, custom data loaders, and plug-and-play config support.
+* Dual-Branch Multi-Scale ViT: Jointly extracts fine-grained patch details and broad contextual features simultaneously.
+* Linear-Time Cross-Attention: Fuses representations between different patch resolutions using an efficient token-exchange mechanism.
+* Lightweight Masksembles: Emulates deep ensembles in a single forward/backward pipeline using structured binary masks without the Nx training cost.
+* Uncertainty Quantification (UQ): Computes predictive entropy and variance scores to flag out-of-distribution (OOD) or low-confidence medical/clinical samples.
+* Modular PyTorch Pipeline: Clean training scripts, custom data loaders, and plug-and-play config support.
 
 ---
 
-## ðŸ—ï¸ Architecture Overview
+## Architecture Overview
 
 ```
 Input Image (H x W x 3)
-   â”‚
-   â”œâ”€â”€â”€â–º Small Patch Branch (Fine Scale)  â”€â”€â–º [Patch Embed] â”€â”€â–º Transformer Blocks â”€â”€â”
-   â”‚                                                                                 â–¼
-   â”‚                                                                         Cross-Attention
-   â”‚                                                                           Token Fusion
-   â”‚                                                                                 â–²
-   â””â”€â”€â”€â–º Large Patch Branch (Coarse Scale) â”€â”€â–º [Patch Embed] â”€â”€â–º Transformer Blocks â”€â”€â”˜
-                                                                                     â”‚
+   |
+   +---> Small Patch Branch (Fine Scale)  --> [Patch Embed] --> Transformer Blocks --+
+   |                                                                                 |
+   |                                                                         Cross-Attention
+   |                                                                           Token Fusion
+   |                                                                                 |
+   +---> Large Patch Branch (Coarse Scale) -> [Patch Embed] --> Transformer Blocks --+
+                                                                                     |
                                                                            Fused Representation
-                                                                                     â”‚
-                                                                           â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-                                                                           â–¼                   â–¼
+                                                                                     |
+                                                                           +---------+---------+
+                                                                           |                   |
                                                                      [Masksemble Head]   [Classifier]
-                                                                           â”‚                   â”‚
-                                                                           â–¼                   â–¼
+                                                                           |                   |
+                                                                           v                   v
                                                                   Ensemble Predictions & Uncertainty
 ```
 
@@ -50,28 +50,28 @@ Input Image (H x W x 3)
 
 ---
 
-## ðŸ“‚ Repository Structure
+## Repository Structure
 
 ```tree
 Cross-ViT-with-masksemble/
-â”œâ”€â”€ models/
-â”‚   â”œâ”€â”€ crossvit.py           # Cross-ViT backbone implementation
-â”‚   â”œâ”€â”€ masksembles.py        # Masksemble layer & binary mask generator
-â”‚   â””â”€â”€ crossvit_masksemble.py# End-to-end model wrapper
-â”œâ”€â”€ datasets/
-â”‚   â””â”€â”€ dataset_loader.py     # Custom dataloaders (HAM10000 / ISIC / ImageNet)
-â”œâ”€â”€ utils/
-â”‚   â”œâ”€â”€ metrics.py            # Accuracy, F1, ECE, and uncertainty metrics
-â”‚   â””â”€â”€ loss.py               # Custom ensemble loss functions
-â”œâ”€â”€ train.py                  # Training pipeline
-â”œâ”€â”€ evaluate.py               # Evaluation & uncertainty calibration script
-â”œâ”€â”€ requirements.txt          # Dependencies
-â””â”€â”€ README.md                 # Project documentation
+|-- models/
+|   |-- crossvit.py           # Cross-ViT backbone implementation
+|   |-- masksembles.py        # Masksemble layer & binary mask generator
+|   +-- crossvit_masksemble.py# End-to-end model wrapper
+|-- datasets/
+|   +-- dataset_loader.py     # Custom dataloaders (HAM10000 / ISIC / ImageNet)
+|-- utils/
+|   |-- metrics.py            # Accuracy, F1, ECE, and uncertainty metrics
+|   +-- loss.py               # Custom ensemble loss functions
+|-- train.py                  # Training pipeline
+|-- evaluate.py               # Evaluation & uncertainty calibration script
+|-- requirements.txt          # Dependencies
++-- README.md                 # Project documentation
 ```
 
 ---
 
-## ðŸš€ Getting Started
+## Getting Started
 
 ### 1. Clone the Repository
 ```bash
@@ -100,7 +100,7 @@ tqdm>=4.64.0
 
 ---
 
-## ðŸ’» Training & Evaluation
+## Training & Evaluation
 
 ### Training the Model
 ```bash
@@ -126,14 +126,9 @@ python evaluate.py \
 
 ---
 
-## ðŸ“ˆ Uncertainty Quantification & Calibration
+## Benchmark Comparison
 
-The model outputs predictions across ensemble masks M to compute:
-- Predictive Mean Probability
-- Predictive Entropy (Epistemic + Aleatoric)
-- Expected Calibration Error (ECE)
-
-| Model Variant | Accuracy (%) | Macro F1 | ECE (â†“) | Params (M) |
+| Model Variant | Accuracy (%) | Macro F1 | ECE (Down) | Params (M) |
 | :--- | :---: | :---: | :---: | :---: |
 | Standard ViT-B/16 | 84.2 | 0.812 | 0.084 | ~86M |
 | Standard Cross-ViT | 86.8 | 0.845 | 0.062 | ~43M |
@@ -141,7 +136,7 @@ The model outputs predictions across ensemble masks M to compute:
 
 ---
 
-## ðŸ¤ Contributing
+## Contributing
 
 Contributions, issues, and feature requests are welcome!
 1. Fork the Project
@@ -152,10 +147,10 @@ Contributions, issues, and feature requests are welcome!
 
 ---
 
-## ðŸ“œ License
-This project is licensed under the MIT License.
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## ðŸ“š References & Acknowledgments
-- CrossViT: Chen et al., "CrossViT: Cross-Attention Multi-Scale Vision Transformer for Image Classification", ICCV 2021.
-- Masksembles: Durasov et al., "Masksembles for Uncertainty Estimation", CVPR 2021.
-- Built upon PyTorch Image Models (timm).
+## References & Acknowledgments
+* CrossViT: Chen et al., "CrossViT: Cross-Attention Multi-Scale Vision Transformer for Image Classification", ICCV 2021.
+* Masksembles: Durasov et al., "Masksembles for Uncertainty Estimation", CVPR 2021.
+* Built upon PyTorch Image Models (timm).
